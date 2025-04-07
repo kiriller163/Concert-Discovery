@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concert Discovery PRO Ultimate (Fancier Design)</title>
+  <meta name="description" content="Concert Discovery with advanced features and improved design.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+  <!-- SHA-256 for password hashing -->
+  <script src="https://cdn.jsdelivr.net/gh/emn178/js-sha256@0.9.0/build/sha256.min.js"></script>
+
+  <style>
+    /* ======== GLOBAL RESETS & FONTS ======== */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    /* ======== ALERT BOX ======== */
+    .alert-box {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: #4caf50; color: #fff; padding: 15px 25px; border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: none; font-weight: 600; z-index: 9999;
+      transition: all 0.4s ease;
+    }
+
+    /* ======== HEADER ======== */
+    header {
+      background: linear-gradient(45deg, #673ab7, #512da8);
+      color: #fff;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-container {
+      max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo {
+      font-size: 1.6rem; font-weight: 600;
+    }
+    nav a {
+      color: #fff; text-decoration: none; margin-left: 20px; font-weight: 500; transition: color 0.3s;
+    }
+    nav a:hover { color: #ffc107; }
+    .visit-count {
+      font-size: 0.9rem; opacity: 0.8; position: absolute; right: 20px; top: 25px;
+    }
+
+    /* ======== HERO SECTION ======== */
+    .hero {
+      background: linear-gradient(to right, rgba(103,58,183,0.7), rgba(81,45,168,0.7)),
+        url('https://via.placeholder.com/1920x800/222/fff?text=Concert+Discovery+PRO+Ultimate') no-repeat center/cover;
+      min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; padding: 0 20px;
+    }
+    .hero-content {
+      max-width: 800px;
+      animation: fadeIn 1s ease forwards;
+    }
+    .hero-content h1 {
+      font-size: 2.8rem; margin-bottom: 1rem; font-weight: 600;
+    }
+    .hero-content p {
+      font-size: 1.2rem; margin-bottom: 1.5rem; font-weight: 300;
+    }
+    .cta {
+      display: inline-block; padding: 12px 24px; background: #ff5722; color: #fff;
+      text-decoration: none; font-weight: 500; border-radius: 4px; transition: background 0.3s;
+    }
+    .cta:hover {
+      background: #e64a19;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+
+    /* ======== SECTION & HEADINGS ======== */
+    section {
+      max-width: 1200px; margin: 0 auto; padding: 50px 20px;
+    }
+    section h2 {
+      text-align: center; margin-bottom: 1rem; font-size: 2rem; font-weight: 600;
+      color: #512da8;
+    }
+    section p {
+      text-align: center; margin-bottom: 1.5rem; font-weight: 300;
+    }
+
+    /* ======== ABOUT SECTION ======== */
+    #about .content {
+      background: #fff; padding: 30px; border-left: 5px solid #512da8; border-radius: 4px; margin-top: 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* ======== AUTH BOXES ======== */
+    .auth-box {
+      max-width: 400px; margin: 20px auto; background: #fff; border: 1px solid #ddd;
+      padding: 20px; border-radius: 4px; display: none; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .auth-box h3 {
+      margin-bottom: 10px; text-align: center; color: #512da8;
+    }
+    .auth-box input {
+      display: block; width: 100%; margin-bottom: 10px; padding: 8px; font-size: 1rem;
+      border: 1px solid #ccc; border-radius: 4px;
+    }
+    .auth-box button {
+      padding: 10px 20px; background: #512da8; color: #fff; border: none; border-radius: 4px;
+      cursor: pointer; font-weight: 500;
+    }
+    .auth-box button:hover {
+      background: #673ab7;
+    }
+    .auth-msg {
+      text-align: center; margin-top: 10px; color: #e53935; font-weight: 500;
+    }
+
+    /* ======== ADD CONCERT FORM ======== */
+    #add-concert-form {
+      margin: 30px 0; padding: 20px; background: #fff; border: 1px solid #ccc;
+      display: none; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    #add-concert-form h3 {
+      margin-bottom: 15px; color: #512da8;
+    }
+    #add-concert-form input, #add-concert-form select {
+      width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;
+    }
+    #add-concert-form button {
+      padding: 10px 20px; background: #2196f3; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;
+    }
+    #add-concert-form button:hover {
+      background: #1976d2;
+    }
+
+    /* ======== TABLE ======== */
+    #concerts-table {
+      width: 100%; border-collapse: collapse; margin-top: 30px; background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden;
+    }
+    #concerts-table thead {
+      background: #ede7f6;
+    }
+    #concerts-table th,
+    #concerts-table td {
+      padding: 12px 15px; border-bottom: 1px solid #ddd; text-align: center; font-weight: 400;
+    }
+    #concerts-body tr:hover {
+      background: #f5f5f5;
+    }
+    .favorite-btn {
+      cursor: pointer; font-weight: bold; font-size: 1.2rem;
+      transition: transform 0.2s;
+    }
+    .favorite-btn:hover {
+      transform: scale(1.2);
+    }
+    .favorite {
+      color: #f44336;
+    }
+
+    /* ======== RECOMMENDATION BOX ======== */
+    .recommendation-box {
+      margin-top: 30px; text-align: center; background: #fff8e1; padding: 20px; border: 1px solid #ffd54f;
+      display: none; border-radius: 4px;
+    }
+
+    /* ======== FILTER DATE RANGE ======== */
+    .date-filter {
+      margin-top: 20px; text-align: center;
+    }
+    .date-filter input {
+      margin: 5px; padding: 5px 8px; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .date-filter button {
+      padding: 8px 16px; background: #8bc34a; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;
+    }
+    .date-filter button:hover {
+      background: #7cb342;
+    }
+
+    /* ======== FOOTER ======== */
+    footer {
+      background: #673ab7; color: #fff; text-align: center; padding: 20px; margin-top: 40px;
+    }
+    footer a { color: #ffd740; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ALERT BOX -->
+  <div class="alert-box" id="alert-box">Success!</div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo">ConcertDiscovery PRO Ultimate</div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#" id="login-nav">Login</a>
+        <a href="#" id="register-nav">Register</a>
+        <a href="#concerts">Concerts</a>
+      </nav>
+      <div class="visit-count" id="visit-count"></div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>The Most Advanced Concert Finder</h1>
+      <p>Registration, login, date filters, advanced favorites, custom alerts... Deployed on Azure!</p>
+      <a href="#concerts" class="cta">Explore Concerts</a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Concert Discovery PRO Ultimate</h2>
+    <p>A feature-packed platform built for music fans and server enthusiasts alike.</p>
+    <div class="content">
+      <p>Register to create an account or log in if you already have one.  
+         Admins can add new concerts. Each user has unique favorites, 
+         so your likes won't clash with others.  
+         Filter concerts by genre or date range, and see a recommendation for the soonest upcoming event.</p>
+      <p>All data is stored locally (localStorage), 
+         including hashed passwords to keep them safer than plain text.
+         Enjoy a modern design with subtle animations and a gradient style!</p>
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section class="auth-box" id="login-section">
+    <h3>Login</h3>
+    <input type="text" id="login-username" placeholder="Username">
+    <input type="password" id="login-password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <div class="auth-msg" id="login-msg"></div>
+  </section>
+
+  <!-- REGISTER -->
+  <section class="auth-box" id="register-section">
+    <h3>Register</h3>
+    <input type="text" id="reg-username" placeholder="Username">
+    <input type="text" id="reg-email" placeholder="Email">
+    <input type="password" id="reg-password" placeholder="Password">
+    <button id="reg-btn">Register</button>
+    <div class="auth-msg" id="reg-msg"></div>
+  </section>
+
+  <!-- CONCERTS SECTION -->
+  <section id="concerts">
+    <h2>Upcoming Concerts</h2>
+    <p>Filter by genre or date range. Admin can add new shows. Each user has their own favorites!</p>
+
+    <!-- AddConcert form -->
+    <div id="add-concert-form">
+      <h3>Add New Concert (Admin Only)</h3>
+      <input type="text" id="concert-name" placeholder="Concert Name">
+      <select id="concert-genre">
+        <option value="Rock">Rock</option>
+        <option value="Pop">Pop</option>
+        <option value="Electronic">Electronic</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Classical">Classical</option>
+      </select>
+      <input type="date" id="concert-date">
+      <button id="add-concert-btn">Add</button>
+    </div>
+
+    <!-- Genre filter -->
+    <div style="text-align:center; margin-top:20px;">
+      <label for="genre-filter"><strong>Genre:</strong></label>
+      <select id="genre-filter">
+        <option value="all">All</option>
+        <option value="Rock">Rock</option>
+        <option value="Pop">Pop</option>
+        <option value="Electronic">Electronic</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Classical">Classical</option>
+      </select>
+    </div>
+
+    <!-- Date range filter -->
+    <div class="date-filter">
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date">
+      <label for="end-date">End Date:</label>
+      <input type="date" id="end-date">
+      <button id="date-filter-btn">Apply</button>
+    </div>
+
+    <table id="concerts-table">
+      <thead>
+        <tr>
+          <th>Concert</th>
+          <th>Genre</th>
+          <th>Date</th>
+          <th>Days Left</th>
+          <th>Favorite</th>
+        </tr>
+      </thead>
+      <tbody id="concerts-body"></tbody>
+    </table>
+
+    <div class="recommendation-box" id="recommendation-box">
+      <h3>Don't Miss This Show!</h3>
+      <p id="recommendation-content"></p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <p>© 2025 ConcertDiscovery PRO Ultimate</p>
+    <p>Contact: <a href="mailto:kirill@example.com">kirill@example.com</a></p>
+    <p>Server info: (Will add in Azure after deployment)</p>
+  </footer>
+
+  <script>
+    /************************************
+     * ALERT-BOX FUNCTION
+     ************************************/
+    const alertBox = document.getElementById("alert-box");
+    function showAlert(msg, color="#4caf50") {
+      alertBox.textContent = msg;
+      alertBox.style.background = color;
+      alertBox.style.display = "block";
+      setTimeout(() => {
+        alertBox.style.display = "none";
+      }, 2000);
+    }
+
+    /************************************
+     * VISIT COUNTER
+     ************************************/
+    let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    visitCount++;
+    localStorage.setItem("visitCount", visitCount);
+    const visitCountEl = document.getElementById("visit-count");
+    visitCountEl.textContent = `Visits: ${visitCount}`;
+
+    /************************************
+     * USER DATABASE (localStorage)
+     ************************************/
+    let userDB = JSON.parse(localStorage.getItem("userDB")) || {
+      // if we want a default admin:
+      "admin": { email:"admin@site.com", passHash:sha256("1234"), isAdmin:true }
+    };
+
+    /************************************
+     * CURRENT USER & FAVORITES
+     ************************************/
+    let currentUser = null;
+    let favorites = {}; // {username: [ "concertKey", ...], ...}
+
+    /************************************
+     * DEFAULT + STORED CONCERTS
+     ************************************/
+    const defaultConcerts = [
+      { name:"Rock Night Fest", genre:"Rock", date:"2025-05-10" },
+      { name:"Pop Extravaganza", genre:"Pop", date:"2025-04-28" },
+      { name:"Electronica Vibes", genre:"Electronic", date:"2025-04-22" },
+      { name:"Jazz Evening", genre:"Jazz", date:"2025-06-01" },
+      { name:"Classical Orchestra Gala", genre:"Classical", date:"2025-03-30" }
+    ];
+
+    let storedConcerts = JSON.parse(localStorage.getItem("concertsData")) || [];
+    let concertsData = [...defaultConcerts, ...storedConcerts];
+
+    /************************************
+     * DOM ELEMENTS
+     ************************************/
+    const loginNav = document.getElementById("login-nav");
+    const registerNav = document.getElementById("register-nav");
+
+    const loginSection = document.getElementById("login-section");
+    const registerSection = document.getElementById("register-section");
+
+    const loginUsername = document.getElementById("login-username");
+    const loginPassword = document.getElementById("login-password");
+    const loginBtn = document.getElementById("login-btn");
+    const loginMsg = document.getElementById("login-msg");
+
+    const regUsername = document.getElementById("reg-username");
+    const regEmail = document.getElementById("reg-email");
+    const regPassword = document.getElementById("reg-password");
+    const regBtn = document.getElementById("reg-btn");
+    const regMsg = document.getElementById("reg-msg");
+
+    const addConcertForm = document.getElementById("add-concert-form");
+    const addConcertBtn = document.getElementById("add-concert-btn");
+    const cNameInput = document.getElementById("concert-name");
+    const cGenreInput = document.getElementById("concert-genre");
+    const cDateInput = document.getElementById("concert-date");
+
+    const concertsBody = document.getElementById("concerts-body");
+    const genreFilter = document.getElementById("genre-filter");
+    const startDateInput = document.getElementById("start-date");
+    const endDateInput = document.getElementById("end-date");
+    const dateFilterBtn = document.getElementById("date-filter-btn");
+
+    const recommendationBox = document.getElementById("recommendation-box");
+    const recommendationContent = document.getElementById("recommendation-content");
+
+    /************************************
+     * INIT
+     ************************************/
+    function init() {
+      currentUser = null;
+      loginSection.style.display = "none";
+      registerSection.style.display = "none";
+      loadFavorites();
+      updateUI();
+      renderConcerts();
+    }
+
+    /************************************
+     * NAV CLICKS
+     ************************************/
+    loginNav.addEventListener("click", (e)=>{
+      e.preventDefault();
+      if (currentUser) {
+        // logout
+        currentUser = null;
+        showAlert("Logged out", "#f44336");
+        updateUI();
+        renderConcerts();
+      } else {
+        // show login
+        registerSection.style.display = "none";
+        loginSection.style.display = "block";
+      }
+    });
+
+    registerNav.addEventListener("click", (e)=>{
+      e.preventDefault();
+      if (currentUser) {
+        showAlert("You are already logged in!", "#ff9800");
+      } else {
+        loginSection.style.display = "none";
+        registerSection.style.display = "block";
+      }
+    });
+
+    /************************************
+     * LOGIN
+     ************************************/
+    loginBtn.addEventListener("click", ()=>{
+      const user = loginUsername.value.trim();
+      const pass = loginPassword.value.trim();
+      if (!user || !pass) {
+        loginMsg.textContent = "Please fill username & password.";
+        return;
+      }
+      if (!userDB[user]) {
+        loginMsg.textContent = "User not found.";
+        return;
+      }
+      const hashed = sha256(pass);
+      if (hashed === userDB[user].passHash) {
+        currentUser = { username: user, isAdmin: userDB[user].isAdmin || false };
+        showAlert(`Welcome back, ${user}!`);
+        loginSection.style.display = "none";
+        loginUsername.value = "";
+        loginPassword.value = "";
+        loginMsg.textContent = "";
+        updateUI();
+        renderConcerts();
+      } else {
+        loginMsg.textContent = "Wrong password.";
+      }
+    });
+
+    /************************************
+     * REGISTER
+     ************************************/
+    regBtn.addEventListener("click", ()=>{
+      const user = regUsername.value.trim();
+      const email = regEmail.value.trim();
+      const pass = regPassword.value.trim();
+      if (!user || !email || !pass) {
+        regMsg.textContent = "Please fill all fields.";
+        return;
+      }
+      if (userDB[user]) {
+        regMsg.textContent = "Username already taken.";
+        return;
+      }
+      // create new user
+      userDB[user] = {
+        email: email,
+        passHash: sha256(pass),
+        isAdmin: false
+      };
+      localStorage.setItem("userDB", JSON.stringify(userDB));
+      showAlert("Registered successfully!");
+      regUsername.value = "";
+      regEmail.value = "";
+      regPassword.value = "";
+      regMsg.textContent = "";
+      registerSection.style.display = "none";
+    });
+
+    /************************************
+     * UI UPDATE
+     ************************************/
+    function updateUI() {
+      if (!currentUser) {
+        loginNav.textContent = "Login";
+        registerNav.style.display = "inline-block";
+        addConcertForm.style.display = "none";
+      } else {
+        // logged in
+        loginNav.textContent = "Logout";
+        registerNav.style.display = "none";
+        if (currentUser.isAdmin) {
+          addConcertForm.style.display = "block";
+        } else {
+          addConcertForm.style.display = "none";
+        }
+      }
+    }
+
+    /************************************
+     * ADD CONCERT
+     ************************************/
+    addConcertBtn.addEventListener("click", ()=>{
+      if (!currentUser || !currentUser.isAdmin) {
+        showAlert("Only admin can add concerts", "#e53935");
+        return;
+      }
+      const nameVal = cNameInput.value.trim();
+      const genreVal = cGenreInput.value;
+      const dateVal = cDateInput.value;
+      if (!nameVal || !dateVal) {
+        alert("Fill concert name and date");
+        return;
+      }
+      const newC = { name: nameVal, genre: genreVal, date: dateVal };
+      concertsData.push(newC);
+      saveConcertsLocal();
+      showAlert("Concert added!");
+      cNameInput.value = "";
+      cDateInput.value = "";
+      renderConcerts();
+    });
+
+    function saveConcertsLocal() {
+      const userCreated = concertsData.filter(cd => {
+        return !defaultConcerts.some(def => def.name===cd.name && def.date===cd.date && def.genre===cd.genre);
+      });
+      localStorage.setItem("concertsData", JSON.stringify(userCreated));
+    }
+
+    /************************************
+     * RENDER CONCERTS
+     ************************************/
+    genreFilter.addEventListener("change", renderConcerts);
+    dateFilterBtn.addEventListener("click", renderConcerts);
+
+    function renderConcerts() {
+      concertsBody.innerHTML = "";
+      const gFilter = genreFilter.value;
+      const sDate = startDateInput.value ? new Date(startDateInput.value) : null;
+      const eDate = endDateInput.value ? new Date(endDateInput.value) : null;
+
+      const sorted = concertsData.slice().sort((a,b) => new Date(a.date)- new Date(b.date));
+      let earliestConcert = null;
+      let earliestDate = null;
+
+      sorted.forEach((c)=>{
+        if (gFilter!=="all" && c.genre!==gFilter) return;
+        const cDate = new Date(c.date);
+        if (sDate && cDate < sDate) return;
+        if (eDate && cDate > eDate) return;
+
+        const diff = calcDaysLeft(c.date);
+        if (!earliestDate || cDate < earliestDate) {
+          earliestDate = cDate;
+          earliestConcert = c;
+        }
+
+        const tr = document.createElement("tr");
+        // name
+        const tdName = document.createElement("td");
+        tdName.textContent = c.name;
+        // genre
+        const tdGenre = document.createElement("td");
+        tdGenre.textContent = c.genre;
+        // date
+        const tdDate = document.createElement("td");
+        tdDate.textContent = c.date;
+        // days
+        const tdDays = document.createElement("td");
+        tdDays.textContent = diff>=0 ? diff : "Expired";
+        // fav
+        const tdFav = document.createElement("td");
+        const favSpan = document.createElement("span");
+        favSpan.classList.add("favorite-btn");
+
+        const key = getUserFavKey(c);
+        if (isFav(key)) {
+          favSpan.textContent = "♥";
+          favSpan.classList.add("favorite");
+        } else {
+          favSpan.textContent = "♡";
+        }
+        favSpan.addEventListener("click", ()=>toggleFav(key, favSpan));
+
+        tdFav.appendChild(favSpan);
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdGenre);
+        tr.appendChild(tdDate);
+        tr.appendChild(tdDays);
+        tr.appendChild(tdFav);
+
+        concertsBody.appendChild(tr);
+      });
+
+      if (earliestConcert) {
+        const d = calcDaysLeft(earliestConcert.date);
+        if (d>=0) {
+          recommendationBox.style.display = "block";
+          recommendationContent.textContent =
+            `We recommend: "${earliestConcert.name}" on ${earliestConcert.date}. ${d} day(s) left!`;
+        } else {
+          recommendationBox.style.display = "none";
+        }
+      } else {
+        recommendationBox.style.display = "none";
+      }
+    }
+
+    /************************************
+     * FAVORITES
+     ************************************/
+    function loadFavorites() {
+      let favStore = JSON.parse(localStorage.getItem("favoritesStore")) || {};
+      favorites = favStore;
+    }
+    function saveFavorites() {
+      localStorage.setItem("favoritesStore", JSON.stringify(favorites));
+    }
+    function getUserFavKey(c) {
+      return `${c.name}-${c.date}-${c.genre}`;
+    }
+    function isFav(key) {
+      if (!currentUser) return false;
+      if (!favorites[currentUser.username]) favorites[currentUser.username] = [];
+      return favorites[currentUser.username].includes(key);
+    }
+    function toggleFav(key, elem) {
+      if (!currentUser) {
+        showAlert("Login to add favorites", "#e53935");
+        return;
+      }
+      if (!favorites[currentUser.username]) favorites[currentUser.username] = [];
+      let arr = favorites[currentUser.username];
+      if (arr.includes(key)) {
+        arr = arr.filter(k => k!==key);
+        elem.textContent = "♡";
+        elem.classList.remove("favorite");
+        showAlert("Removed from favorites", "#ffc107");
+      } else {
+        arr.push(key);
+        elem.textContent = "♥";
+        elem.classList.add("favorite");
+        showAlert("Added to favorites!");
+      }
+      favorites[currentUser.username] = arr;
+      saveFavorites();
+    }
+
+    /************************************
+     * HELPERS
+     ************************************/
+    function calcDaysLeft(dateStr) {
+      const now = new Date();
+      const tgt = new Date(dateStr);
+      return Math.ceil((tgt - now)/(1000*60*60*24));
+    }
+
+    /************************************
+     * DOMContentLoaded
+     ************************************/
+    document.addEventListener("DOMContentLoaded", () => {
+      init();
+    });
+
+  </script>
+</body>
+</html>
+
