@@ -697,4 +697,19 @@
   </script>
 </body>
 </html>
+<div style="text-align: center; margin-top: 30px;">
+  <button onclick="showConcerts()" style="padding: 10px 20px; font-size: 16px;">Show Upcoming Concerts</button>
+  <ul id="concertList" style="display:none; list-style: none; padding: 0; margin-top: 20px;">
+    <li>🎸 Arctic Monkeys – June 15</li>
+    <li>🎤 Dua Lipa – July 2</li>
+    <li>🎶 Coldplay – August 20</li>
+  </ul>
+</div>
+
+<script>
+  function showConcerts() {
+    const list = document.getElementById("concertList");
+    list.style.display = "block";
+  }
+</script>
 
