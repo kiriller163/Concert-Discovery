@@ -10,9 +10,9 @@ This is a cloud-hosted project developed by **Kirill Anikeev (Student ID: 354646
 
 The website is live and accessible at:
 
-**http://[Your Server IP or Domain]**
+http://139.59.248.248/)
 
-*(Replace with your real IP or domain if using one)*
+
 
 ---
 
@@ -48,7 +48,7 @@ It includes:
 
 ## 📹 Video Demonstration
 
-Watch the video walkthrough here:  
+ 
 👉 [Insert link to YouTube or Google Drive video]
 
 ---
