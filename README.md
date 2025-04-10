@@ -38,13 +38,8 @@ It includes:
 - Fully custom and self-deployed  
 - Includes student identity and project context
 
----
 
-## 📷 Screenshots
 
-> *(Add screenshots of your live site and terminal setup here)*
-
----
 
 ## 📹 Video Demonstration
 
